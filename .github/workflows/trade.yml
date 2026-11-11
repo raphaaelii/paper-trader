@@ -1,0 +1,21 @@
+name: Paper Trader
+
+on:
+  schedule:
+    # Every 5 minutes, Mon-Fri, 13:00-21:59 UTC (covers US market hours)
+    - cron: "*/5 13-21 * * 1-5"
+  workflow_dispatch:  # lets you run it manually with a button
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - run: python trader.py
+        env:
+          ALPACA_KEY: ${{ secrets.ALPACA_KEY }}
+          ALPACA_SECRET: ${{ secrets.ALPACA_SECRET }}
